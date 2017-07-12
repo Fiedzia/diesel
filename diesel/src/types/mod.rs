@@ -31,6 +31,9 @@ pub mod structs {
         //! backend.
         #[cfg(feature = "postgres")]
         pub use pg::data_types::*;
+
+        #[cfg(feature = "mysql")]
+        pub use mysql::data_types::*;
     }
 }
 
@@ -162,6 +165,7 @@ use std::io::Write;
 /// [BigDecimal]: /bigdecimal/struct.BigDecimal.html
 /// [bigdecimal]: /bigdecimal/index.html
 #[derive(Debug, Clone, Copy, Default)] pub struct Numeric;
+pub type Decimal = Numeric;
 
 #[cfg(not(feature="postgres"))]
 impl NotNull for Numeric {}
@@ -288,6 +292,9 @@ pub type VarChar = Text;
 
 #[cfg(feature = "postgres")]
 pub use pg::types::sql_types::*;
+
+#[cfg(feature = "mysql")]
+pub use mysql::types::sql_types::*;
 
 #[cfg(feature = "mysql")]
 pub use mysql::types::*;
