@@ -1,6 +1,6 @@
 // FIXME: Review this module to see if we can do these casts in a more backend agnostic way
 extern crate chrono;
-#[cfg(feature="postgres")]
+#[cfg(any(feature="postgres", feature="mysql"))]
 extern crate bigdecimal;
 
 use schema::*;
@@ -430,8 +430,8 @@ fn pg_numeric_from_sql() {
 }
 
 #[test]
-#[cfg(feature = "postgres")]
-fn pg_numeric_bigdecimal_to_sql() {
+#[cfg(any(feature="postgres", feature="mysql"))]
+fn pg_mysql_numeric_bigdecimal_to_sql() {
     use self::bigdecimal::BigDecimal;
 
     fn correct_rep(integer: u64, decimal: u64) -> bool {
@@ -485,6 +485,26 @@ fn pg_numeric_bigdecimal_from_sql() {
         let expected = value.parse::<BigDecimal>().unwrap();
         assert_eq!(expected, query_single_value::<Numeric, BigDecimal>(&query));
     }
+}
+
+#[test]
+#[cfg(feature="mysql")]
+fn mysql_numeric_bigdecimal_from_sql() {
+    use self::bigdecimal::BigDecimal;
+
+    let query = "cast(1.0 as decimal)";
+    let expected_value: BigDecimal = "1.0".parse().expect("Could not parse to a BigDecimal");
+    assert_eq!(expected_value, query_single_value::<Numeric, BigDecimal>(query));
+
+    let query = "cast(141.00 as decimal)";
+    let expected_value: BigDecimal = "141.00".parse().expect("Could not parse to a BigDecimal");
+    assert_eq!(expected_value, query_single_value::<Numeric, BigDecimal>(query));
+
+    // Some non standard values:
+    let query = "cast(18446744073709551616 as decimal)"; // 2^64; doesn't fit in u64
+    //it is mysql, it will trim it even in strict mode
+    let expected_value: BigDecimal = "9999999999.00".parse().expect("Could not parse to a BigDecimal");
+    assert_eq!(expected_value, query_single_value::<Numeric, BigDecimal>(query));
 }
 
 #[test]
