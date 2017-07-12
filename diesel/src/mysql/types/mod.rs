@@ -1,11 +1,18 @@
 #[cfg(feature = "chrono")]
 mod date_and_time;
+pub mod numeric;
 
 use byteorder::WriteBytesExt;
-use mysql::{Mysql, MysqlType};
+pub use mysql::{Mysql, MysqlType};
 use std::error::Error as StdError;
 use std::io::Write;
 use types::{ToSql, ToSqlOutput, IsNull, FromSql, HasSqlType};
+
+pub mod sql_types {
+    #[cfg(feature = "numeric")]
+    pub use super::numeric::bigdecimal::BigDecimal;
+
+}
 
 primitive_impls!(Tinyint -> (i8, mysql: (Tiny)));
 
@@ -56,5 +63,20 @@ impl HasSqlType<::types::Time> for Mysql {
 impl HasSqlType<::types::Timestamp> for Mysql {
     fn metadata(_: &()) -> MysqlType {
         MysqlType::Timestamp
+    }
+}
+
+
+impl HasSqlType<::types::Numeric> for Mysql {
+    fn metadata() -> MysqlType {
+        MysqlType::String
+    }
+}
+
+
+#[cfg(feature = "numeric")]
+impl HasSqlType<sql_types::BigDecimal> for Mysql {
+    fn metadata() -> MysqlType {
+        MysqlType::String
     }
 }
