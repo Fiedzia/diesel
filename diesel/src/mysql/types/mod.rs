@@ -1,9 +1,9 @@
 #[cfg(feature = "chrono")]
 mod date_and_time;
-pub mod numeric;
+mod numeric;
 
 use byteorder::WriteBytesExt;
-pub use mysql::{Mysql, MysqlType};
+use mysql::{Mysql, MysqlType};
 use std::error::Error as StdError;
 use std::io::Write;
 use types::{ToSql, ToSqlOutput, IsNull, FromSql, HasSqlType};
