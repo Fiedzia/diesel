@@ -8,12 +8,6 @@ use std::error::Error as StdError;
 use std::io::Write;
 use types::{ToSql, ToSqlOutput, IsNull, FromSql, HasSqlType};
 
-pub mod sql_types {
-    #[cfg(feature = "numeric")]
-    pub use super::numeric::bigdecimal::BigDecimal;
-
-}
-
 primitive_impls!(Tinyint -> (i8, mysql: (Tiny)));
 
 impl ToSql<::types::Tinyint, Mysql> for i8 {
@@ -66,16 +60,7 @@ impl HasSqlType<::types::Timestamp> for Mysql {
     }
 }
 
-
 impl HasSqlType<::types::Numeric> for Mysql {
-    fn metadata() -> MysqlType {
-        MysqlType::String
-    }
-}
-
-
-#[cfg(feature = "numeric")]
-impl HasSqlType<sql_types::BigDecimal> for Mysql {
     fn metadata() -> MysqlType {
         MysqlType::String
     }

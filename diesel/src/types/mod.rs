@@ -32,9 +32,6 @@ pub mod structs {
         //! backend.
         #[cfg(feature = "postgres")]
         pub use pg::data_types::*;
-
-        #[cfg(feature = "mysql")]
-        pub use mysql::data_types::*;
     }
 }
 
@@ -151,13 +148,13 @@ use std::io::{self, Write};
 ///
 /// ### [`ToSql`](/diesel/types/trait.ToSql.html) impls
 ///
-/// - [`bigdecimal::BigDecimal`][bigdecimal] (currenty PostgreSQL only, requires the `numeric`
+/// - [`bigdecimal::BigDecimal`][bigdecimal] (currenty PostgreSQL and MySQL only, requires the `numeric`
 /// feature, which depends on the
 /// [`bigdecimal`][bigdecimal] crate)
 ///
 /// ### [`FromSql`](/diesel/types/trait.FromSql.html) impls
 ///
-/// - [`bigdecimal::BigDecimal`][BigDecimal] (currenty PostgreSQL only, requires the `numeric`
+/// - [`bigdecimal::BigDecimal`][BigDecimal] (currenty PostgreSQL and MySQL only, requires the `numeric`
 /// feature, which depends on the
 /// [`bigdecimal`][bigdecimal] crate)
 ///
@@ -310,9 +307,6 @@ impl NotNull for Interval {} // FIXME: Interval should not be in this file
 
 #[cfg(feature = "postgres")]
 pub use pg::types::sql_types::*;
-
-#[cfg(feature = "mysql")]
-pub use mysql::types::sql_types::*;
 
 #[cfg(feature = "mysql")]
 pub use mysql::types::*;
