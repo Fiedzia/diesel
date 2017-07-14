@@ -4,6 +4,7 @@ mod numeric;
 
 use byteorder::WriteBytesExt;
 use mysql::{Mysql, MysqlType};
+use query_builder::QueryId;
 use std::error::Error as StdError;
 use std::io::Write;
 use types::{ToSql, ToSqlOutput, IsNull, FromSql, HasSqlType};
@@ -63,5 +64,13 @@ impl HasSqlType<::types::Timestamp> for Mysql {
 impl HasSqlType<::types::Numeric> for Mysql {
     fn metadata() -> MysqlType {
         MysqlType::String
+    }
+}
+
+impl QueryId for ::types::Numeric {
+    type QueryId = Self;
+
+    fn has_static_query_id() -> bool {
+        true
     }
 }
