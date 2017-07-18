@@ -28,7 +28,7 @@ pub mod bigdecimal {
     }
 
     impl HasSqlType<BigDecimal> for Mysql {
-        fn metadata() -> MysqlType {
+        fn metadata(_: &()) -> MysqlType {
             MysqlType::String
         }
     }

@@ -63,7 +63,7 @@ impl HasSqlType<::types::Timestamp> for Mysql {
 }
 
 impl HasSqlType<::types::Numeric> for Mysql {
-    fn metadata() -> MysqlType {
+    fn metadata(_: &()) -> MysqlType {
         MysqlType::String
     }
 }
