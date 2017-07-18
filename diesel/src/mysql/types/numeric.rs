@@ -23,7 +23,7 @@ pub mod bigdecimal {
         fn from_sql(bytes: Option<&[u8]>) -> Result<Self, Box<Error+Send+Sync>> {
             let bytes = not_none!(bytes);
             BigDecimal::parse_bytes(bytes, 10)
-                .ok_or(Box::from(format!("{:?} is not valid decimal number ", bytes)))
+                .ok_or_else(|| Box::from(format!("{:?} is not valid decimal number ", bytes)))
        }
     }
 
