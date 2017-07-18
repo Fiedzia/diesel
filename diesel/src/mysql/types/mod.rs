@@ -4,6 +4,7 @@ mod numeric;
 
 use byteorder::WriteBytesExt;
 use mysql::{Mysql, MysqlType};
+#[cfg(not(feature="postgres"))]
 use query_builder::QueryId;
 use std::error::Error as StdError;
 use std::io::Write;
