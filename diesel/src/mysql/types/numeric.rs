@@ -9,10 +9,10 @@ pub mod bigdecimal {
 
     use self::bigdecimal::BigDecimal;
 
-    use types::{self, FromSql, ToSql, IsNull, HasSqlType};
+    use types::{self, FromSql, ToSql, ToSqlOutput, IsNull, HasSqlType};
 
     impl ToSql<types::Numeric, Mysql> for BigDecimal {
-        fn to_sql<W: Write>(&self, out: &mut W) -> Result<IsNull, Box<Error + Send + Sync>> {
+        fn to_sql<W: Write>(&self, out: &mut ToSqlOutput<W, Mysql>) -> Result<IsNull, Box<Error+Send+Sync>> {
             write!(out, "{}", *self)
                 .map(|_| IsNull::No)
                 .map_err(|e| e.into())
